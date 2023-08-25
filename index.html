@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <title>Grups</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+
+<body>
+    <button type="button" id="addGrup">Add grup</button>
+    <div class="allGrup" id="allGrup">
+
+    </div>
+    </div>
+    <script>
+        document.getElementById("addGrup").addEventListener("click", addGrup, false);
+
+        function deleteGrup() {
+            event.target.parentElement.remove()
+        }
+        function editGrup() {
+            let text;
+            for (const child of event.target.parentElement.children) {
+                if (child.tagName == 'INPUT') {
+
+                    if (child.disabled == false) {
+                        child.disabled = true;
+                        text=child.value;
+                    }
+                    else if(child.disabled == true) {
+                        child.disabled = false
+                    }
+                }
+            }
+            event.target.parentElement.id=text;
+        }
+        function addGrup() {
+            var element = document.getElementById("allgrup");
+            var numberOfChildren = Number(document.getElementsByTagName('div').length)
+            if (numberOfChildren == null)
+                numberOfChildren = 0;
+
+            let div = document.createElement('div');
+            div.className = 'grup';
+            div.id = 'grup' + numberOfChildren;
+
+            let deleteButton = document.createElement('button');
+            deleteButton.id = 'deleteGrup';
+            deleteButton.textContent = 'X';
+            div.appendChild(deleteButton);
+
+            let inputLlista = document.createElement('input');
+            inputLlista.type = 'text'
+            inputLlista.disabled = true;
+            div.appendChild(inputLlista)
+
+            let editButton = document.createElement('button');
+            editButton.id = 'deleteGrup';
+            editButton.textContent = 'edit';
+            div.appendChild(editButton);
+
+            let labelLlista = document.createElement('label');
+            div.appendChild(labelLlista)
+            editButton.addEventListener("click", editGrup, false);
+            deleteButton.addEventListener("click", deleteGrup, false);
+
+            document.getElementById("allGrup").appendChild(div);
+        }
+    </script>
+</body>
+
+</html>
