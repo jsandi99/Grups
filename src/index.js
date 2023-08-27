@@ -127,11 +127,14 @@ function generate(event) {
         break;
     }
   } while (valorTotal == 0);
-  console.log(groups);  
+  console.log(groups); 
+  
+  var button;
   for (const g of groups) {
-    document.getElementById(groups.indexOf(g).toString()).children[2].textContent = '\n\n';
     for (const person1 of g) {
-      document.getElementById(groups.indexOf(g).toString()).children[2].textContent += person1.nom + '\n';
+      button = document.createElement('button');
+      button.textContent = person1.nom;
+      document.getElementById("allGrup").children[groups.indexOf(g)].appendChild(button)
       valorPersonal = 10;
       for (const person2 of g) {
         if (person1.amistats.has(person2.nom)) {
@@ -147,10 +150,6 @@ function generate(event) {
         console.log(person1.nom + ' ni primera ni segona opcio: '
           + Array.from(person1.unitats.keys())[groups.indexOf(g)] + ': ' + person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]));
       }
-    }
-    for(let i = 5 - g.length; i > 0; i--)
-    {
-      document.getElementById(groups.indexOf(g).toString()).children[2].textContent += '\n';
     }
 
     //falta paritat i experiencia!!!!!!!
