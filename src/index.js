@@ -16,37 +16,15 @@ const input = document.getElementById('input')
 input.addEventListener('change', () => {
   readXlsxFile(input.files[0], { sheet: 'Unitat' }).then((rows) => {
     unitatRows = rows;
-    console.log(unitatRows);
-    // let table = document.getElementById("outputTable1"); 
-    // var newRow;    
-    // for (const row of rows) {
-    //   newRow = table.insertRow(table.length);
-    //   for (let i = 0; i < row.length; i++) {
-    //     newRow.insertCell(i).innerHTML = row[i];  
-    //   }
-    // }
-    // `rows` is an array of rows
-    // each row being an array of cells.
+    for(let i = 1; i < rows[0].length; i++) {
+      addGrup(rows[0][i], i-1);
+    }
   })
   readXlsxFile(input.files[0], { sheet: 'Friends' }).then((rows) => {
     friendsRows = rows;
-    console.log(friendsRows);
-    // let table = document.getElementById("outputTable2"); 
-    // var newRow;    
-    // for (let i = 1; i < rows.length; i++) {
-    //   newRow = table.insertRow(i-1);
-    //   newRow.insertCell(0).innerHTML = rows[i][0];
-    //   for (let j = 1; j < rows[i].length/2+1; j++) {
-    //     if(rows[i][j*2-1] != null && rows[i][j*2-1] != undefined && rows[i][j*2] != null && rows[i][j*2] != undefined)
-    //       newRow.insertCell(j).innerHTML = rows[i][j*2-1] + '(' + rows[i][j*2] + ')';
-    //     else break;
-    //   }
-    // }
   })
   readXlsxFile(input.files[0], { sheet: 'Personal' }).then((rows) => {
     personalRows = rows;
-    console.log(personalRows);
-
     personList();
   })
 })
@@ -102,7 +80,6 @@ function generate(event) {
 
   var groups;
   var num;
-  var satisfaccio;
   var condicional;
   var valorPersonal;
   var valorTotal;
@@ -147,10 +124,11 @@ function generate(event) {
         break;
     }
   } while (valorTotal == 0);
-  console.log(groups);
-
+  console.log(groups);  
   for (const g of groups) {
+    document.getElementById(groups.indexOf(g).toString()).children[2].textContent = '\n\n';
     for (const person1 of g) {
+      document.getElementById(groups.indexOf(g).toString()).children[2].textContent += person1.nom + '\n';
       valorPersonal = 10;
       for (const person2 of g) {
         if (person1.amistats.has(person2.nom)) {
@@ -167,6 +145,10 @@ function generate(event) {
           + Array.from(person1.unitats.keys())[groups.indexOf(g)] + ': ' + person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]));
       }
     }
+    for(let i = 5 - g.length; i > 0; i--)
+    {
+      document.getElementById(groups.indexOf(g).toString()).children[2].textContent += '\n';
+    }
 
     //falta paritat i experiencia!!!!!!!
     //  !!!!!!!!!!!!
@@ -182,57 +164,40 @@ function generate(event) {
   }
 }
 
-function table(event) {
-  event.preventDefault();
-
-  let table = document.getElementById("outputTable");
-  let newRow = table.insertRow(table.rows.length);
-  newRow.insertCell(0).innerHTML = "Joan";
-  newRow.insertCell(1).innerHTML = "Llops";
-  newRow.insertCell(2).innerHTML = "1";
-}
-
 
 // PART DEL JORDI
 //-----------------------------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById("addGrup").addEventListener("click", addGrup, false);
-  
-  const grup = document.querySelectorAll('.grup');
-  
-  grup.forEach((g) => g.addEventListener("click", deleteGrup, false))
-  
-  function deleteGrup() {
-      event.target.parentElement.remove()
-  }
-  function addGrup() {
-      var element = document.getElementById("allgrup");
-      var numberOfChildren = Number(document.getElementsByTagName('div').length)
-      if (numberOfChildren == null)
-          numberOfChildren = 0;
-
-      let il = document.createElement('il');
-      il.className = 'grup';
-      il.id = 'grup' + numberOfChildren;
-
-      let inputLlista = document.createElement('input');
-      inputLlista.type = 'text'
-      il.appendChild(inputLlista)
-
-      let deleteButton = document.createElement('button');
-      deleteButton.id = 'deleteGrup';
-      deleteButton.textContent = 'x';
-      il.appendChild(deleteButton);
-
-      let labelLlista = document.createElement('label');
-      labelLlista.textContent = "heoiahñskldjnskljdn askldjn aslkjdnlaksjnd"
-      il.appendChild(labelLlista)
 
 
-      deleteButton.addEventListener("click", deleteGrup, false);
-      document.getElementById("allGrup").appendChild(il);
-  }
-})
+function deleteGrup() {
+  event.target.parentElement.remove()
+}
+function addGrup(nom, id) {
+  var numberOfChildren = Number(document.getElementsByTagName('div').length)
+  if (numberOfChildren == null)
+      numberOfChildren = 0;
 
+  let il = document.createElement('il');
+  il.className = 'grup';
+  il.id = id.toString();
+
+  let inputLlista = document.createElement('input');
+  inputLlista.type = 'text'
+  inputLlista.value = nom;
+  il.appendChild(inputLlista)
+
+  let deleteButton = document.createElement('button');
+  deleteButton.id = 'deleteGrup';
+  deleteButton.textContent = 'x';
+  il.appendChild(deleteButton);
+
+  let labelLlista = document.createElement('label');
+  labelLlista.textContent = '\n\n';
+  il.appendChild(labelLlista)
+
+
+  deleteButton.addEventListener("click", deleteGrup, false);
+  document.getElementById("allGrup").appendChild(il);
+}
 
