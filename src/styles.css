@@ -5,16 +5,16 @@ body {
 #divul {}
 
 #allGrup {
-    width: 700;
-
     display: grid;
-    grid-template-columns: auto auto;
-    background:
-        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) calc((50% - 10px)) 10px / 2px calc(100% - 20px),
-        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) 10px calc(100% - 10px) /calc(100% - 20px) 1px;
-    padding: 10px;
-    background-repeat: no-repeat;
-    background-color: #2196F3;
+  grid-template-columns: auto auto auto;
+  background:
+   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc((100% - 20px) / 3 + 10px) 10px / 2px calc(100% - 20px),
+   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc(2*((100% - 20px) / 3) + 10px) 10px / 2px calc(100% - 20px),
+   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc(100% - 10px) 10px / 1px calc(100% - 20px),
+   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) 10px calc(100% - 10px)  /calc(100% - 20px)  1px;
+  padding:10px;
+  background-repeat:no-repeat; 
+  background-color: #2196F3;
 
 }
 

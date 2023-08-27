@@ -12,15 +12,15 @@ class Persona {
 
 // File.
 var unitatRows, friendsRows, personalRows;
-const input = document.getElementById('input')
+const input = document.getElementById('chooseFile')
 input.addEventListener('change', () => {
   readXlsxFile(input.files[0], { sheet: 'Unitat' }).then((rows) => {
     unitatRows = rows;
     while (document.getElementById("allGrup").firstChild) {
       document.getElementById("allGrup").removeChild(document.getElementById("allGrup").firstChild);
     }
-    for(let i = 1; i < rows[0].length; i++) {
-      addGrup(rows[0][i], i-1);
+    for (let i = 1; i < rows[0].length; i++) {
+      addGrup(rows[0][i], i - 1);
     }
   })
   readXlsxFile(input.files[0], { sheet: 'Friends' }).then((rows) => {
@@ -127,8 +127,8 @@ function generate(event) {
         break;
     }
   } while (valorTotal == 0);
-  console.log(groups); 
-  
+  console.log(groups);
+
   var button;
   for (const g of groups) {
     for (const person1 of g) {
@@ -158,9 +158,9 @@ function generate(event) {
   }
   console.log(valorTotal);
   for (const g of groups) {
-    for(const p of g){
+    for (const p of g) {
       const grup = document.querySelectorAll('.grup');
-      grup.forEach((g)=>g.getElementsByClassName);
+      grup.forEach((g) => g.getElementsByClassName);
     }
 
   }
@@ -170,36 +170,21 @@ function generate(event) {
 // PART DEL JORDI
 //-----------------------------------------------------------------------------------
 
-
-
-function deleteGrup() {
-  event.target.parentElement.remove()
-}
 function addGrup(nom, id) {
   var numberOfChildren = Number(document.getElementsByTagName('div').length)
   if (numberOfChildren == null)
-      numberOfChildren = 0;
+    numberOfChildren = 0;
 
   let il = document.createElement('il');
   il.className = 'grup';
   il.id = id.toString();
 
-  let inputLlista = document.createElement('input');
-  inputLlista.type = 'text'
-  inputLlista.value = nom;
+  let inputLlista = document.createElement('label');
+  inputLlista.textContent = nom;
   il.appendChild(inputLlista)
 
-  let deleteButton = document.createElement('button');
-  deleteButton.id = 'deleteGrup';
-  deleteButton.textContent = 'x';
-  il.appendChild(deleteButton);
-
-  let labelLlista = document.createElement('label');
-  labelLlista.textContent = '\n\n';
-  il.appendChild(labelLlista)
 
 
-  deleteButton.addEventListener("click", deleteGrup, false);
   document.getElementById("allGrup").appendChild(il);
 }
 
