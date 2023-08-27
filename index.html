@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <title>Grups</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -6,67 +7,55 @@
 </head>
 
 <body>
-	<h1>Grups</h1><br><br><br>
-    <table id="outputTable1">
-    </table>
-    <table id="outputTable2">
-    </table>
     <input type="file" id="input" />
-	<div id="app"></div>
-	<button id="generate">Crea doc!</button>
-  
-    <textarea id="monitors" name="monitors" rows="15" cols="20" placeholder="Maria
-Josep
-Jacob
-Miquel
-Ana"></textarea>
+    <div id="app"></div> <!-- no se que es jaja -->
+    <button id="generate">Crea doc!</button>
 
-<textarea id="res" name="res" rows="15" cols="20" placeholder="Maria - 10
-Josep - 9
-Jacob - 8
-Miquel - 7
-Ana - 10"></textarea>
-    
     <ul class="allGrup" id="allGrup">
+        <il class="grup" id="Castors Wami">
+            <input type="text" value="Castors Wami" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="Castors Churun Merun">
+            <input type="text" value="Castors Churun Merun" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="Llops Wahya">
+            <input type="text" value="Llops Wahya" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="Llops Seonee">
+            <input type="text" value="Llops Seonee" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="RiNG Besiberris">
+            <input type="text" value="RiNG Besiberris" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="RiNG Encantats">
+            <input type="text" value="RiNG Encantats" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="PiC Tanganyika">
+            <input type="text" value="PiC Tanganyika" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
+        <il class="grup" id="PiC Maracaibo">
+            <input type="text" value="PiC Maracaibo" disabled>
+            <button id="deleteGrup">x</button>
+            <label></label>
+        </il>
     </ul>
 
     <button type="button" id="addGrup">Add grup</button>
 
 </body>
-</script src="src/index.js">
-<script>
-    document.getElementById("addGrup").addEventListener("click", addGrup, false);
-    document.getElementsByClassName("grup").addEventListener("click", deleteGrup, false);
-    
-    function deleteGrup() {
-        event.target.parentElement.remove()
-    }
-    function addGrup() {
-        var element = document.getElementById("allgrup");
-        var numberOfChildren = Number(document.getElementsByTagName('div').length)
-        if (numberOfChildren == null)
-            numberOfChildren = 0;
-
-        let il = document.createElement('il');
-        il.className = 'grup';
-        il.id = 'grup' + numberOfChildren;
-
-        let inputLlista = document.createElement('input');
-        inputLlista.type = 'text'
-        il.appendChild(inputLlista)
-
-        let deleteButton = document.createElement('button');
-        deleteButton.id = 'deleteGrup';
-        deleteButton.textContent = 'x';
-        il.appendChild(deleteButton);
-
-        let labelLlista = document.createElement('label');
-        labelLlista.textContent="heoiahñskldjnskljdn askldjn aslkjdnlaksjnd"
-        il.appendChild(labelLlista)
-
-
-        deleteButton.addEventListener("click", deleteGrup, false);
-        document.getElementById("allGrup").appendChild(il);
-    }
-</script>
+<script src="src/index.js"></script>
 </html>
