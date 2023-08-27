@@ -131,6 +131,9 @@ function generate(event) {
 
   var button;
   for (const g of groups) {
+    while (document.getElementById("allGrup").children[groups.indexOf(g)].firstChild) {
+      document.getElementById("allGrup").children[groups.indexOf(g)].removeChild(document.getElementById("allGrup").children[groups.indexOf(g)].firstChild);
+    }
     for (const person1 of g) {
       button = document.createElement('button');
       button.textContent = person1.nom;
