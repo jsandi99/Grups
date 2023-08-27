@@ -2,11 +2,28 @@ body {
     background-color: grey;
 }
 
+#divul {}
 
-il {
-    display: inline-block;
-    width: 220;
-    margin: 20;
+#allGrup {
+    width: 700;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) calc((50% - 10px)) 10px / 2px calc(100% - 20px),
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) 10px calc(100% - 10px) /calc(100% - 20px) 1px;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-color: #2196F3;
+
+}
+
+#grup {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
 }
 
 
@@ -14,20 +31,6 @@ label {
     white-space: pre-wrap;
 }
 
-#deleteGrup {
-    width: 20px;
-    height: 20px;
-    margin: 1;
-}
-
-#addGrup {
-    padding: 16px 32px;
-    font-size: 16px;
-    margin: 4px 2px;
-    top: 0;
-    right: 0;
-    position: fixed;
-}
 
 #buffer {
     padding: 16px 32px;
@@ -56,14 +59,12 @@ textarea {
     margin-top: 20;
 }
 
-
-
 nav ul {
-    height:200px; 
-    width:80%;
+    height: 200px;
+    width: 80%;
     list-style-type: none;
     /* padding: 0; */
     margin: 0;
-    overflow:hidden; 
-    overflow-y:scroll;
+    overflow: hidden;
+    overflow-y: scroll;
 }
