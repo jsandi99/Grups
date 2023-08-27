@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Grups</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +6,15 @@
 </head>
 
 <body>
-
+	<h1>Grups</h1><br><br><br>
+    <table id="outputTable1">
+    </table>
+    <table id="outputTable2">
+    </table>
+    <input type="file" id="input" />
+	<div id="app"></div>
+	<button id="generate">Crea doc!</button>
+  
     <textarea id="monitors" name="monitors" rows="15" cols="20" placeholder="Maria
 Josep
 Jacob
@@ -26,6 +33,7 @@ Ana - 10"></textarea>
     <button type="button" id="addGrup">Add grup</button>
 
 </body>
+<script src="src/index.js">
 <script>
     document.getElementById("addGrup").addEventListener("click", addGrup, false);
     document.getElementsByClassName("grup").addEventListener("click", deleteGrup, false);
@@ -60,5 +68,4 @@ Ana - 10"></textarea>
         document.getElementById("allGrup").appendChild(il);
     }
 </script>
-
 </html>
