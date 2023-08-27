@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html>
-
 <head>
-	<title>Grups</title>
-	<meta charset="UTF-8" />
+    <title>Grups</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/styles.css">
 </head>
 
 <body>
@@ -15,8 +14,58 @@
     <input type="file" id="input" />
 	<div id="app"></div>
 	<button id="generate">Crea doc!</button>
-	<script src="src/index.js">
-</script>
-</body>
+  
+    <textarea id="monitors" name="monitors" rows="15" cols="20" placeholder="Maria
+Josep
+Jacob
+Miquel
+Ana"></textarea>
 
+<textarea id="res" name="res" rows="15" cols="20" placeholder="Maria - 10
+Josep - 9
+Jacob - 8
+Miquel - 7
+Ana - 10"></textarea>
+    
+    <ul class="allGrup" id="allGrup">
+    </ul>
+
+    <button type="button" id="addGrup">Add grup</button>
+
+</body>
+<script src="src/index.js">
+<script>
+    document.getElementById("addGrup").addEventListener("click", addGrup, false);
+    document.getElementsByClassName("grup").addEventListener("click", deleteGrup, false);
+    function deleteGrup() {
+        event.target.parentElement.remove()
+    }
+    function addGrup() {
+        var element = document.getElementById("allgrup");
+        var numberOfChildren = Number(document.getElementsByTagName('div').length)
+        if (numberOfChildren == null)
+            numberOfChildren = 0;
+
+        let il = document.createElement('il');
+        il.className = 'grup';
+        il.id = 'grup' + numberOfChildren;
+
+        let inputLlista = document.createElement('input');
+        inputLlista.type = 'text'
+        il.appendChild(inputLlista)
+
+        let deleteButton = document.createElement('button');
+        deleteButton.id = 'deleteGrup';
+        deleteButton.textContent = 'x';
+        il.appendChild(deleteButton);
+
+        let labelLlista = document.createElement('label');
+        labelLlista.textContent="heoiahñskldjnskljdn askldjn aslkjdnlaksjnd"
+        il.appendChild(labelLlista)
+
+
+        deleteButton.addEventListener("click", deleteGrup, false);
+        document.getElementById("allGrup").appendChild(il);
+    }
+</script>
 </html>
