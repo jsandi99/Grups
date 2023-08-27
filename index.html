@@ -33,10 +33,11 @@ Ana - 10"></textarea>
     <button type="button" id="addGrup">Add grup</button>
 
 </body>
-<script src="src/index.js">
+</script src="src/index.js">
 <script>
     document.getElementById("addGrup").addEventListener("click", addGrup, false);
     document.getElementsByClassName("grup").addEventListener("click", deleteGrup, false);
+    
     function deleteGrup() {
         event.target.parentElement.remove()
     }
