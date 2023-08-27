@@ -16,6 +16,9 @@ const input = document.getElementById('input')
 input.addEventListener('change', () => {
   readXlsxFile(input.files[0], { sheet: 'Unitat' }).then((rows) => {
     unitatRows = rows;
+    while (document.getElementById("allGrup").firstChild) {
+      document.getElementById("allGrup").removeChild(document.getElementById("allGrup").firstChild);
+    }
     for(let i = 1; i < rows[0].length; i++) {
       addGrup(rows[0][i], i-1);
     }
