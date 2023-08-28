@@ -7,61 +7,36 @@ class Persona {
     this.sexe = sexe;
     this.amistats = new Map(amistats);
     this.unitats = new Map(unitats);
+    this.experiencia = experiencia;
   }
 }
 
-// File.
-let unitatRows, friendsRows, personalRows;
+//Variables Globals
+
+let unitatRows, friendsRows, personalRows, persones = [], groups, valorTotal = 0, size, par;
+
+
+//Main
+
+//Llegeix el doc xlsx i crea unitats i les persones
 const input = document.getElementById('chooseFile')
-input.addEventListener('change', () => {
+input.addEventListener('change', () => {  
+  while (document.getElementById("allGrup").firstChild) {
+    document.getElementById("allGrup").removeChild(document.getElementById("allGrup").firstChild);
+  }
   readXlsxFile(input.files[0], { sheet: 'Unitat' }).then((rows) => {
     unitatRows = rows;
-    while (document.getElementById("allGrup").firstChild) {
-      document.getElementById("allGrup").removeChild(document.getElementById("allGrup").firstChild);
-    }
-    for (let i = 1; i < rows[0].length; i++) {
-      addGrup(rows[0][i], i - 1);
-    }
-  })
+    for (let i = 1; i < rows[0].length; i++) addGrup(rows[0][i], i - 1);
+  });
   readXlsxFile(input.files[0], { sheet: 'Friends' }).then((rows) => {
     friendsRows = rows;
-  })
+  });
   readXlsxFile(input.files[0], { sheet: 'Personal' }).then((rows) => {
     personalRows = rows;
     personList();
-  })
+  });
 })
 
-let persones = [];
-let amistats;
-let unitats;
-let nota;
-
-function personList() {
-  for (let i = 1; i < unitatRows.length; i++) {
-    amistats = new Map();
-    for (let j = 1; j < friendsRows[i].length; j += 2) {
-      if (friendsRows[i][j] == null || friendsRows[i][j] == undefined ||
-        friendsRows[i][j + 1] == null || friendsRows[i][j + 1] == undefined) break;
-      amistats.set(friendsRows[i][j], friendsRows[i][j + 1]);
-    }
-
-    unitats = new Map();
-    for (let j = 1; j < unitatRows[i].length; j++) {
-      switch (unitatRows[i][j]) {
-        case 1: nota = 10; break;//Potser ha de ser 1 o '1', ho he de comprovar.
-        case 2: nota = 7; break;
-        case 3: nota = 5; break;
-        case 4: nota = 4; break;
-        case 5: nota = 0; break;
-        default: nota = 8; break; //He de vigilar perque si no es amb comilles donara tot 7.
-      }
-      unitats.set(unitatRows[0][j], nota);
-    }
-    persones.push(new Persona(unitatRows[i][0], personalRows[i][1], personalRows[i][2], amistats, unitats))
-  }
-  console.log(persones);
-}
 document.getElementById("generate").addEventListener(
   "click",
   function (event) {
@@ -70,54 +45,172 @@ document.getElementById("generate").addEventListener(
   false
 );
 
-let groups;
-let num;
-let condicional;
-let valorPersonal;
-let valorTotal;
+
+
+//Crea les persones
+function personList() {
+  for (let i = 1; i < unitatRows.length; i++) {
+    let amistats = new Map();
+    for (let j = 1; j < friendsRows[i].length; j += 2) {
+      if (friendsRows[i][j] == null || friendsRows[i][j] == undefined ||
+          friendsRows[i][j+1] == null || friendsRows[i][j+1] == undefined) break;
+      amistats.set(friendsRows[i][j], friendsRows[i][j + 1]);
+    }
+
+    let grupsUnitats = new Map();
+    for (let j = 1; j < unitatRows[i].length; j++) {
+      switch (unitatRows[i][j]) {
+        case 1: grupsUnitats.set(unitatRows[0][j], 10); break;
+        case 2: grupsUnitats.set(unitatRows[0][j], 7); break;
+        case 3: grupsUnitats.set(unitatRows[0][j], 5); break;
+        case 4: grupsUnitats.set(unitatRows[0][j], 4); break;
+        case 5: grupsUnitats.set(unitatRows[0][j], 0); break;
+        default: grupsUnitats.set(unitatRows[0][j], 8); break;
+      }
+    }
+    persones.push(new Persona(unitatRows[i][0], personalRows[i][1], personalRows[i][2], amistats, grupsUnitats))
+  }
+  //Afegeixo els likes/dislikes reciprocament agafant sempre el mes baix.
+  for (const persona of persones) {
+    for (const nomamic of Array.from(persona.amistats.keys())) {
+      for (const amic of persones) {
+        if(amic.nom == nomamic){
+          if(amic.amistats.has(persona.nom && persona.amistats.get(nomamic) > amic.amistats.get(persona.nom)))
+            persona.amistats.set(nomamic, amic.amistats.get(persona.nom));
+          else if(persona.amistats.get(nomamic) < 7)
+            amic.amistats.set(persona.nom, persona.amistats.get(nomamic));
+          break;
+        }
+      }
+    }
+  }
+  let m = 0, f = 0;
+  for (const pers of persones) {
+    if(pers.sexe == 'M') m++;
+    else if(pers.sexe == 'F') f++;
+    else {console.log("on no, un no binari!"); return;}
+  }     //Potser hauria de ser variable global i no anar calculant
+  par = m / (m+f);
+  //console.log(persones);
+}
+
+
+
+
+
+
 
 function generate(event) {
   event.preventDefault();
 
-  const size = friendsRows.length;
+  size = Math.ceil((friendsRows.length-1)/(unitatRows[0].length-1));
 
-  let unitats = [];  //No existeix, simplement son els grups que fa el xouxou
-  for (let i = 0; i < 8; i++) //no ha d'existir, es el que fa el xouxou
-  {
-    unitats.push(new Array(5));
+  let unitats = [];
+  for (let i = 0; i < unitatRows[0].length-1; i++) {
+    unitats.push(new Array(size));  //Es bastant inutil pero ho deixo aixi per si en el futur faig que es puguin fer de tamanys diferents
   }
 
-  do {
-    groups = [];
-    for (let i = 0; i < unitats.length; i++) {
-      groups.push(new Array(0));
-    }
-    for (const persona of persones) {
-      do {
-        num = Math.floor(Math.random() * unitats.length);
-      } while (groups[num].length >= unitats[num].length)
-      groups[num].push(persona);
-    }
+  let bestValor = 0;
+  let bestGroups;
+
+  for(let num = 0; num < 100000; num++)
+  {
+    do {
+      groups = [];
+      for (let i = 0; i < unitats.length; i++) {
+        groups.push(new Array(0));
+      }
+      fixedCreaGrups();
+    } while (valorTotal == 0);
     calculaGrups();
-  } while (valorTotal == 0);
-  document.getElementById("valor").textContent = valorTotal.toString();
-  console.log(groups);
+    if(bestValor < valorTotal) {
+      bestValor = valorTotal;
+      bestGroups = [...groups];
+    }
+  }
+  
+  valorTotal = bestValor;
+  groups = [...bestGroups];
 
   debugGrups();
+}
 
-  document.querySelectorAll('.nom').forEach((n) => n.addEventListener("click", () => {
-    console.log("has clicat");
-    toggle(n);
-}));
-  
-  console.log(valorTotal);
-  for (const g of groups) {
-    for (const p of g) {
-      const grup = document.querySelectorAll('.grup');
-      grup.forEach((g) => g.getElementsByClassName);
+function fixedCreaGrups(){
+  let randPersones = [...persones];
+  let num;
+  let disponibilitat;
+  valorTotal = 1;
+  while(randPersones.length > 0) {
+    num = Math.floor(Math.random() * randPersones.length);
+    disponibilitat = calculaPosicio(randPersones[num]);   
+    
+    let total = disponibilitat.reduce((partialSum, a) => partialSum + a, 0);
+    if(total == 0) {
+      valorTotal = 0;
+      return;
     }
-
+    let rand = Math.random()*total;
+    let i;
+    for(i = 0; rand >= 0; i++){
+      rand -= disponibilitat[i];
+    }
+    groups[i-1].push(randPersones[num]);
+    valorTotal *= disponibilitat[i-1];
+    randPersones[num] = randPersones[randPersones.length-1];
+    randPersones.pop();
   }
+}
+
+function calculaPosicio(persona)
+{
+  let disponibilitat = new Array(unitatRows[0].length-1);
+  for(let i = 0; i < disponibilitat.length; i++)
+  {
+    if(size - groups[i].length == 0) disponibilitat[i] = 0;
+    else disponibilitat[i] = Math.pow(persona.unitats.get(Array.from(persona.unitats.keys())[i]), size - groups[i].length);
+    let num = 1;
+    for (const p of groups[i]) {
+      if(persona.amistats.has(p.nom)) num *= persona.amistats.get(p.nom);
+      else num *= 7;
+    }
+    num *= Math.pow(7, size - groups[i].length);
+    disponibilitat[i] *= num;
+    // let m = 0, f = 0;
+    // if(groups[i].length != 0){
+    //   for (const pers of groups[i]) {
+    //     if(pers.sexe == 'M') m++;
+    //     else if(pers.sexe == 'F') f++;
+    //   }
+    //   let grupPar = m / (m+f);
+    //   if(persona.sexe == 'M') m++;
+    //   else if(persona.sexe == 'F') f++;
+    //   let grupParmes = m / (m+f);
+    //   disponibilitat[i] *= Math.pow(3 * (1 + Math.abs(par-grupPar) - Math.abs(par-grupParmes)), size);
+    // }
+    // else{
+    //   let grupPar;
+    //   if(persona.sexe == 'M') grupPar = 1;
+    //   else if(persona.sexe == 'F') grupPar = 0;
+    //   disponibilitat[i] *= Math.pow(3 * (1 + grupPar - par), size);
+    // }
+    // if(persona.experiencia == 'vell')
+    //   for (const pers of groups[i]) {
+    //     if(pers.experiencia == 'seminou') disponibilitat[i] *= 5;
+    //     else if(pers.experiencia == 'nou') disponibilitat[i] *= 10;
+    //   }
+    // else if(persona.experiencia == 'nou'){
+    //   for (const pers of groups[i]) {
+    //     if(pers.experiencia == 'seminou') disponibilitat[i] *= 5;
+    //     else if(pers.experiencia == 'vell') disponibilitat[i] *= 10;
+    //   }
+    //   if(i > 6){
+    //     disponibilitat[i] /= Math.pow(5, size);
+    //   }
+    // }
+    
+    if(disponibilitat[i] != 0) disponibilitat[i] = Math.log10(disponibilitat[i]); //Redueixo el numero perque sino surt molt gran.
+  }
+  return disponibilitat;
 }
 
 function calculaGrups()
@@ -125,8 +218,8 @@ function calculaGrups()
   valorTotal = 1;
     for (const g of groups) {
       for (const person1 of g) {
-        condicional = false;
-        valorPersonal = 10;
+        let condicional = false;
+        let valorPersonal = 10;
         for (const person2 of g) {
           if (person1.amistats.has(person2.nom)) {
             condicional = true;
@@ -135,23 +228,27 @@ function calculaGrups()
             }
           }
         }
-
         if (condicional) valorTotal *= valorPersonal;
         else valorTotal *= 7;
-
         valorTotal *= person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]);
-        //falta paritat i experiencia!!!!!!!
-        //  !!!!!!!!!!!!
-        // !!!!!!!!!!!
       }
-      if (valorTotal == 0)
-        break;
+      // let m, f;
+      // m = 0;
+      // f = 0;
+      // for (const pers of g) {
+      //   if(pers.sexe == 'M') m++;
+      //   else if(pers.sexe == 'F') f++;
+      // }
+      // let grupPar = m / (m+f);
+      // valorTotal *= Math.pow(5 * (1 - Math.abs(grupPar - par)), size);
     }
 }
 
 function debugGrups()
 {
   let button;
+  console.log('CONFLICTES');
+  document.getElementById("valor").textContent = valorTotal.toString();
   for (const g of groups) {
     while (document.getElementById("allGrup").children[groups.indexOf(g)].children[1].firstChild) {
       document.getElementById("allGrup").children[groups.indexOf(g)].children[1].removeChild(document.getElementById("allGrup").children[groups.indexOf(g)].children[1].firstChild);
@@ -166,20 +263,22 @@ function debugGrups()
       document.getElementById("allGrup").children[groups.indexOf(g)].children[1].appendChild(button);
       for (const person2 of g) {
         if (person1.amistats.has(person2.nom)) {
-          if (person1.amistats.get(person2.nom) < 7) {
-            console.log(person1.nom + ' </3 ' + person2.nom + ': ' + person1.amistats.get(person2.nom));
+          if (person1.amistats.get(person2.nom) < 7 && g.indexOf(person1) < g.indexOf(person2)) {
+            console.log(person1.nom + ' i ' + person2.nom + ' no es volen gaire ): -> ' + person1.amistats.get(person2.nom));
           }
         }
       }
       if (person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]) == 7) {
         console.log(person1.nom + ' segona opcio: ' + Array.from(person1.unitats.keys())[groups.indexOf(g)]);
       }
-      else if (person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]) < 7) {
-        console.log(person1.nom + ' ni primera ni segona opcio: '
-          + Array.from(person1.unitats.keys())[groups.indexOf(g)] + ': ' + person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]));
+      else if (person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]) == 5) {
+        console.log(person1.nom + ' tercera opcio: ' + Array.from(person1.unitats.keys())[groups.indexOf(g)]);
+      }
+      else if (person1.unitats.get(Array.from(person1.unitats.keys())[groups.indexOf(g)]) < 5) {
+        console.log(person1.nom + ' quarta opció: '  + Array.from(person1.unitats.keys())[groups.indexOf(g)]);
       }
     }
-    for(let i = 5 - g.length; i > 0; i--)
+    for(let i = size - g.length; i > 0; i--)
     {
       button = document.createElement('button');
       button.textContent = '+';
@@ -191,6 +290,9 @@ function debugGrups()
     //  !!!!!!!!!!!!
     // !!!!!!!!!!!
   }
+  document.querySelectorAll('.nom').forEach((n) => n.addEventListener("click", () => {
+    toggle(n);
+  }));
 }
 
 let tog = null;
@@ -198,7 +300,7 @@ function toggle(nom)
 {
   if (tog == null) {
     tog = nom;
-    nom.style.background = '#990000';
+    nom.style.background = '#afafaf';
   }
   else if(tog === nom) {
     tog = null;
@@ -208,7 +310,7 @@ function toggle(nom)
     let aux = nom.textContent;
     nom.textContent = tog.textContent;
     tog.textContent = aux;
-    if(tog.textContent == '+' && nom.textContent == '+') {}
+    if(tog.textContent == '+' && nom.textContent == '+') {return;}
     else if(nom.textContent == '+'){
       groups[tog.parentElement.children[1].id].push(groups[nom.parentElement.id][Array.from(nom.parentElement.children).indexOf(nom)]);
       groups[nom.parentElement.id].splice(Array.from(nom.parentElement.children).indexOf(nom),1);
@@ -227,12 +329,6 @@ function toggle(nom)
     tog = null;
     calculaGrups();
     debugGrups();
-    document.getElementById("valor").textContent = valorTotal.toString();
-    console.log(nom, tog);
-    document.querySelectorAll('.nom').forEach((n) => n.addEventListener("click", () => {
-      console.log("has clicat");
-      toggle(n);
-  }));  //No entenc perque aixo es necessari pero bueno... espero que no crei infinits event listeners i es mori tot.
   }
 }
 
