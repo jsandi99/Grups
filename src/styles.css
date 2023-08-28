@@ -2,20 +2,16 @@ body {
     background-color: grey;
 }
 
-#divul {}
-
 #allGrup {
+    height: 600px;
+    width: 1000px;
     display: grid;
-  grid-template-columns: auto auto auto;
-  background:
-   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc((100% - 20px) / 3 + 10px) 10px / 2px calc(100% - 20px),
-   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc(2*((100% - 20px) / 3) + 10px) 10px / 2px calc(100% - 20px),
-   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) calc(100% - 10px) 10px / 1px calc(100% - 20px),
-   linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)) 10px calc(100% - 10px)  /calc(100% - 20px)  1px;
-  padding:10px;
-  background-repeat:no-repeat; 
-  background-color: #2196F3;
-
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, 1fr);
+    grid-auto-flow: column;
+    background-repeat:no-repeat; 
+    background-color: #2196F3;
 }
 
 #grup {
@@ -49,10 +45,10 @@ button {
 }
 
 
-button:hover {
+/* button:hover {
     background-color: green;
     color: white;
-}
+} */
 
 textarea {
     margin-left: 50;
@@ -68,3 +64,28 @@ nav ul {
     overflow: hidden;
     overflow-y: scroll;
 }
+
+.nom{
+    height: 30px;
+    width: 200px;
+    text-align: left;
+    display: block; 
+}
+/* .add{
+    height: 30px;
+    width: 200px;
+    text-align: left;
+    display: block; 
+} */
+
+.nomUnitat {
+    height: 50px;
+    width: 200px;
+    color:white;
+    background-color: rgb(211, 175, 108);    
+    border-top-left-radius: 7px;
+    border-top-right-radius:7px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+  }
