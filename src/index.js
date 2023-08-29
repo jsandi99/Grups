@@ -113,7 +113,7 @@ function generate(event) {
   let bestValor = 0;
   let bestGroups = new Map();
 
-  for(let num = 0; num < 10000; num++)
+  for(let num = 0; num < document.getElementById("quantitat").value; num++)
   {
     do {
       groups = [];

@@ -15,9 +15,18 @@
     
             </ul>
             <div class="opcions">
-                <input class="bot" type="file" id="chooseFile" />
-                <h2 class="bot" id="valor"></h2>
-                <button class="bot" id="generate">Crea doc!</button>
+                <div>
+                    <input type="file" id="chooseFile" />
+                </div>
+                
+                <div>
+                    <label>Numero de calculs</label>
+                    <input type="number" id="quantitat" value="10000" />
+                </div>
+                <div>
+                    <button id="generate">Genera</button>
+                    <h2 id="valor"></h2>
+                </div>
             </div>
         </div>
         <div id="requadrebuffer"></div>
