@@ -91,13 +91,13 @@ textarea {
 
 #buffer {
     overflow-y: scroll;
-    height: 660px;
+    height: 668px;
     width: 250px;
     background-repeat:no-repeat; 
     background-color: #fffff4;
     border:8px solid #afafaf;
     border-radius: 40px;
-    margin: rigth;
+    margin: auto;
 }
 
 .nom{

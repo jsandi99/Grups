@@ -113,7 +113,7 @@ function generate(event) {
   let bestValor = 0;
   let bestGroups = new Map();
 
-  for(let num = 0; num < 1000; num++)
+  for(let num = 0; num < 100000; num++)
   {
     do {
       groups = [];
@@ -144,9 +144,10 @@ function generate(event) {
     document.getElementById("buffer").appendChild(button);
   }
   document.querySelectorAll('.buff').forEach((n) => n.addEventListener("click", () => {
-  groups = bestGroups.get(Array.from(bestGroups.keys())[bestGroups.size - n.textContent]);
-  calculaGrups();
-  debugGrups();
+    console.clear();
+    groups = bestGroups.get(Array.from(bestGroups.keys())[bestGroups.size - n.textContent]);
+    calculaGrups();
+    debugGrups();
   }));
 }
 
