@@ -111,9 +111,9 @@ function generate(event) {
   }
 
   let bestValor = 0;
-  let bestGroups;
+  let bestGroups = new Map();
 
-  for(let num = 0; num < 100000; num++)
+  for(let num = 0; num < 1000; num++)
   {
     do {
       groups = [];
@@ -123,16 +123,31 @@ function generate(event) {
       fixedCreaGrups();
     } while (valorTotal == 0);
     calculaGrups();
-    if(bestValor < valorTotal) {
-      bestValor = valorTotal;
-      bestGroups = [...groups];
+    if(bestGroups.size < 30) {
+      bestGroups.set(valorTotal, [...groups]);
+      bestGroups = new Map([...bestGroups.entries()].sort());
+      bestValor = Array.from(bestGroups.keys())[0];
+    }
+    else if(bestValor < valorTotal){
+      bestGroups.delete(Array.from(bestGroups.keys())[0]);
+      bestGroups.set(valorTotal, [...groups]);
+      bestGroups = new Map([...bestGroups.entries()].sort());
+      bestValor = Array.from(bestGroups.keys())[0];
     }
   }
   
-  valorTotal = bestValor;
-  groups = [...bestGroups];
-
+  let button;
+  for(let i = bestGroups.size - 1; i >= 0; i--) {
+    button = document.createElement('button');
+    button.textContent = bestGroups.size - i;
+    button.className = 'buff';
+    document.getElementById("buffer").appendChild(button);
+  }
+  document.querySelectorAll('.buff').forEach((n) => n.addEventListener("click", () => {
+  groups = bestGroups.get(Array.from(bestGroups.keys())[bestGroups.size - n.textContent]);
+  calculaGrups();
   debugGrups();
+  }));
 }
 
 function fixedCreaGrups(){
@@ -242,6 +257,7 @@ function calculaGrups()
       // let grupPar = m / (m+f);
       // valorTotal *= Math.pow(5 * (1 - Math.abs(grupPar - par)), size);
     }
+    valorTotal = Math.log10(valorTotal);
 }
 
 function debugGrups()
