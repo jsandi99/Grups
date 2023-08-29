@@ -13,7 +13,7 @@ class Persona {
 
 //Variables Globals
 
-let unitatRows, friendsRows, personalRows, persones = [], groups, valorTotal = 0, size, par;
+let unitatRows, friendsRows, personalRows, persones = [], groups, valorTotal = 0, size, par, bestGroups;
 
 
 //Main
@@ -35,6 +35,8 @@ input.addEventListener('change', () => {
     personalRows = rows;
     personList();
   });
+  
+  bestGroups = new Map();
 })
 
 document.getElementById("generate").addEventListener(
@@ -111,7 +113,6 @@ function generate(event) {
   }
 
   let bestValor = 0;
-  let bestGroups = new Map();
 
   for(let num = 0; num < document.getElementById("quantitat").value; num++)
   {
@@ -134,6 +135,10 @@ function generate(event) {
       bestGroups = new Map([...bestGroups.entries()].sort());
       bestValor = Array.from(bestGroups.keys())[0];
     }
+  }
+
+  while (document.getElementById("buffer").firstChild) {
+    document.getElementById("buffer").removeChild(document.getElementById("buffer").firstChild);
   }
   
   let button;
