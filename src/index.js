@@ -113,7 +113,7 @@ function generate(event) {
   let bestValor = 0;
   let bestGroups = new Map();
 
-  for(let num = 0; num < 100000; num++)
+  for(let num = 0; num < 10000; num++)
   {
     do {
       groups = [];
@@ -344,6 +344,7 @@ function toggle(nom)
     }
     nom.style.background = '';
     tog = null;
+    console.clear();
     calculaGrups();
     debugGrups();
   }
